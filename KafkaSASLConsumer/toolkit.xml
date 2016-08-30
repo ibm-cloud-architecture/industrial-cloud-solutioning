@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.1.1.0" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <toolkit name="KafkaSASLConsumer" requiredProductVersion="4.1.1.0" version="1.0.0">
+    <description/>
+    <uriTable>
+      <uri index="1" value="com.ibm.streamsx.messaging.kafka.consumer/KafkaSASLConsumer.spl"/>
+    </uriTable>
+    <namespace name="com.ibm.streamsx.messaging.kafka.consumer">
+      <compositeOp column="11" line="6" name="KafkaSASLConsumer" potentialMain="true" uriIndex="1">
+        <parameter defaultValue="&quot;streams-topic&quot;" metaType="Expression" name="topic" optional="true" type="&lt;rstring>"/>
+        <parameter defaultValue="getSubmissionTimeValue(&quot;file&quot;, &quot;hdfs_test&quot;)" metaType="Expression" name="file" optional="true" type="&lt;rstring>"/>
+        <parameter defaultValue="getSubmissionTimeValue(&quot;user&quot;)" metaType="Expression" name="hdfsUser" optional="true" type="&lt;rstring>"/>
+        <parameter defaultValue="getSubmissionTimeValue(&quot;password&quot;)" metaType="Expression" name="hdfsPassword" optional="true" type="&lt;rstring>"/>
+        <parameter defaultValue="getSubmissionTimeValue(&quot;uri&quot;)" metaType="Expression" name="hdfsUri" optional="true" type="&lt;rstring>"/>
+      </compositeOp>
+    </namespace>
+    <dependency>
+      <common:name>com.ibm.streamsx.messaging</common:name>
+      <common:version>4.0.0</common:version>
+    </dependency>
+    <dependency>
+      <common:name>com.ibm.streamsx.hdfs</common:name>
+      <common:version>[3.5.1,4.0.0)</common:version>
+    </dependency>
+    <sabFiles>
+      <ti:include path="toolkit.xml" root="toolkitDir"/>
+      <ti:include path="impl/java/lib/**" root="toolkitDir"/>
+      <ti:include path="impl/java/bin/**" root="toolkitDir"/>
+      <ti:include path="impl/bin/**" root="toolkitDir"/>
+      <ti:include path="impl/lib/**" root="toolkitDir"/>
+      <ti:include path="impl/nl/*.dat" root="toolkitDir"/>
+      <ti:include path="etc/**" root="toolkitDir"/>
+      <ti:include path="lib/**" root="toolkitDir"/>
+      <ti:include path="nl/**" root="toolkitDir"/>
+      <ti:include path="opt/**" root="toolkitDir"/>
+      <ti:include path="etc/**" root="toolkitDir"/>
+    </sabFiles>
+  </toolkit>
+
+</toolkitModel>

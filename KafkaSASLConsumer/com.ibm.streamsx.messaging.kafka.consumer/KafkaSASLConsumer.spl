@@ -1,0 +1,67 @@
+namespace com.ibm.streamsx.messaging.kafka.consumer ;
+
+use com.ibm.streamsx.messaging.kafka::* ;
+use com.ibm.streamsx.hdfs::* ;
+
+composite KafkaSASLConsumer
+{
+	param
+		expression<rstring> $topic : "streams-topic" ;
+
+		///specify the filename to write to at submission time. 
+		//default is to create a new file every time and add the timestamp to the file name so a new file is created every time
+		expression<rstring> $file : getSubmissionTimeValue("file",
+			"hdfs_test") ;
+		expression<rstring> $hdfsUser : getSubmissionTimeValue("user") ;
+		expression<rstring> $hdfsPassword : getSubmissionTimeValue("password") ;
+		expression<rstring> $hdfsUri : getSubmissionTimeValue("uri") ; //format webhdfs://host:port
+
+	graph
+	    @parallel(width=4)
+		stream<rstring key, rstring message> KafkaStream = KafkaConsumer()
+		{
+			param
+				propertiesFile : "etc/consumer.properties" ;
+				topic : $topic ;
+				jaasFile : "etc/jaas.conf" ;
+		}
+
+		@parallel(width=4)
+		stream<rstring message> Input = Functor(KafkaStream)
+		{
+			logic
+				onTuple KafkaStream :
+				{
+				// unpack the message
+					printStringLn("Unpacked message: " +(rstring) KafkaStream.message) ;
+				}
+
+			output
+				Input : message =(rstring) KafkaStream.message ;
+		}
+
+		stream<rstring out_file_name, uint64 size> HDFSSink = HDFS2FileSink(Input)
+		{
+		    // dump to file in hdfs
+
+			param
+				file : "/tmp/" + $file + "_%TIME.dat" ;
+				timePerFile: (float64) 60;
+				hdfsUri : $hdfsUri ;
+				hdfsUser : $hdfsUser ;
+				hdfsPassword : $hdfsPassword ;
+				policyFilePath : "etc/policyfiles" ;
+		}
+
+		() as Log = Custom(HDFSSink)
+		{
+			logic
+				onTuple HDFSSink :
+				{
+					printStringLn("Wrote " +(rstring) size + " bytes to file " +
+						out_file_name) ;
+				}
+
+		}
+
+}
