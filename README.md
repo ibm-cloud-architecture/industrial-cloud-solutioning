@@ -1,4 +1,4 @@
-# industrial-cloud-solutioning
+# Industrial Cloud Solutioning
 
 This repository contains related code for the Industrial Cloud Solutioning spine.
 
