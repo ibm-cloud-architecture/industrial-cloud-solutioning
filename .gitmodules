@@ -1,0 +1,3 @@
+[submodule "ICSSCCockpit"]
+	path = ICSSCCockpit
+	url = git@github.com:ibm-cloud-architecture/industrial-cloud-solutioning.git
