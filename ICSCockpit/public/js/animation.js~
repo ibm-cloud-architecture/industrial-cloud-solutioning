@@ -1,0 +1,545 @@
+
+
+	/*=======DATABASE RELATED=======*/
+
+		var getLineDB = function(){
+
+			//84 line
+			lines[0] = new Line(841, '84 - Sheppard West (Eastbound)');
+			lines[0].timetable = ["00:01","00:02", "00:09", "00:12", "00:14", "00:15"];
+			var stops0 = [];
+			stops0[0] = new Stop(8411,'Downsview Station');
+			stops0[1] = new Stop(8412, 'Sheppard at Wilson Heights');
+			stops0[2] = new Stop(8413,  'Sheppard at Faywood');
+
+			lines[0].stops = stops0;
+
+			var buses0 = [];
+			buses0[0] = new Bus(8414, lines[0]);		
+			buses0[1] = new Bus(8415, lines[0]);	
+			buses0[2] = new Bus(8416, lines[0]);
+	
+
+			lines[0].buses = buses0;
+
+			//196 line
+			lines[1] = new Line(1961, '196 - York University Rocket (Eastbound)');
+			
+			lines[1].timetable = ["00:01","00:03", "00:09", "00:18", "00:20", "00:24"];
+			var stops1 = [];
+			stops1[0] = new Stop(19611,'Sheppard at Bathurst');
+			stops1[1] = new Stop(19612, 'Sheppard at Senlac');
+			stops1[2] = new Stop(19613,'Sheppard-Yonge Station');
+
+			lines[1].stops = stops1;
+
+			var buses1 = [];
+			buses1[0] = new Bus(19614, lines[1]);		
+			buses1[1] = new Bus(19615, lines[1]);
+			buses1[2] = new Bus(19616, lines[1]);
+			
+			
+			lines[1].buses = buses1;
+
+		}
+
+		//get line on the DB
+		var getLineByID = function(line_id){
+			for(var i=0; i<lines.length; i++){
+				if (lines[i].id == line_id)
+					return lines[i];
+			}
+			return null;
+		}
+
+		//search on the simulator only
+		var getBusByID = function(bus_id){
+			for(var i=0; i<lines.length; i++){
+				for (var j=0; j<lines[i].buses.length; j++){
+					if (lines[i].buses[j].id == bus_id)
+						return lines[i].buses[j];
+				}
+			}
+			return null;
+		}
+
+		//search on the simulator only
+		var getStopByID = function(stop_id){
+			for(var i=0; i<lines.length; i++){
+				for (var j=0; j<lines[i].stops.length; j++){
+					if (lines[i].stops[j].id == stop_id)
+						return lines[i].stops[j];
+				}
+			}
+			return null;
+		}
+
+
+
+	/*=======SELECT RELATED=======*/
+		
+		/* get the line options from DB and put on the select form */
+		var getLineOptions = function(){
+			getLineDB();
+			for(var i=0; i<lines.length; i++){
+				//get all the lines on DB and put on the select form : Lines Tab			
+				$(ttcline).html($(ttcline).html() + "<option value='" + lines[i].id + "'>" + lines[i].name + "</option>");
+
+				// get all the lines on DB and put on the select form and hide them : People Tab
+				$(lineSim).html($(lineSim).html() + "<option value='" + lines[i].id + "'>" + lines[i].name + "</option>");
+				$('#lineSim option').hide();
+				$('#lineSim option[value=default]').show();
+
+				//get all stops for this line
+				for(var j=0; j<lines[i].stops.length; j++){					
+					$(origin).html($(origin).html() + "<option line='"+lines[i].id+"' value='" + lines[i].stops[j].id + "'>" + lines[i].stops[j].name + "</option>");
+					$(destination).html($(destination).html() + "<option line='"+lines[i].id+"' value='" + lines[i].stops[j].id + "'>" + lines[i].stops[j].name + "</option>");
+				}
+			}
+		}
+
+		/* update option on dropdown list after add a new line to the simulator */
+		var updateOptions = function(line){
+			//hide this new line from Line Tab options, so the user cannot add it again
+			$('#ttcline option[value='+line.id+']').hide();
+			//show default value
+			$(ttcline).val('default');
+			//show this new line on the People Tab option, so the user can add people to this line
+			$('#lineSim option[value='+line.id+']').show();
+			//show the new line on the select form as default	
+			$(lineSim).val(line.id);
+				
+			//update the origin and destination options
+			changeOriginOptions();
+			
+		}
+
+			/* update option on dropdrow list after delete a line from the simulator */
+			var updateOptions_delLine = function(line){
+				//show the deleted line on the Line Tab option, so the user can add this line again
+				$('#ttcline option[value='+line.id+']').show();
+				//hide the deleted line from People Tab options, so the user can not add people to this line
+				$('#lineSim option[value='+line.id+']').hide();	
+				//show default value
+				$(ttcline).val('default');
+				$(lineSim).val('default');
+				//update origin and destination options
+				changeOriginOptions();
+				
+			}
+
+
+		/* when choose line, only display the stops of this line : People Tab */
+		var changeOriginOptions = function(){
+				//if lineSim has no option selected, disable origin
+				if ($(lineSim).val() == null){
+					$('#origin').prop("disabled", true);
+					$(origin).val('default');
+				} else {
+					//enable origin select form		
+					$('#origin').prop("disabled", false);
+					//hide all the origin options
+					$('#origin option').hide();
+					//show default
+					$('#origin option[value=default]').show();
+					//show only the stops of the selected line
+		      $('#origin option[line='+ $(lineSim).val() + ']').show();
+				
+					var line = getLineByID($(lineSim).val());
+					//first stop will be select as default
+					$(origin).val(line.stops[0].id);
+					
+				}
+				//update destination select form
+				changeDestinationOptions();
+				
+		}
+
+		/* when choose origin, only display the stops after this stop : People Tab */
+		var changeDestinationOptions = function(){
+				//if lineSim has no option selected, disable destination
+				if ($(lineSim).val() == null){
+					$('#destination').prop("disabled", true);
+					$(destination).val('default');
+				} else {		
+					//hide all the destination options
+					$('#destination option').hide();
+					//show default
+					$('#destination option[value=default]').show();
+					//show only the stops of after the origin
+					var line = getLineByID($(lineSim).val());
+					var i;
+					for(i = 0; i<line.stops.length; i++){	
+							if ($(origin).val() == line.stops[i].id)
+								break;
+					}
+					i++;
+
+					//If origin is the last stop, disable destination selected
+					if(i == line.stops.length){
+						$('#destination option[value=default]').prop("selected", true);
+						$('#destination').prop("disabled", true);
+					//Else the first stop after destination will be selected as default
+					} else {
+						$('#destination').prop("disabled", false);
+						$(destination).val(line.stops[i].id);
+						//Give all the stops after origin
+						for (;i<line.stops.length;i++){
+						 $('#destination option[value=' + line.stops[i].id + ']').show();
+						}
+					} 
+				}  
+		}
+
+	/*=======LINES RELATED=======*/
+
+		/* add lines, buses and stops on the canvas */
+		var addLine = function(){
+
+		
+
+			//if there is no line choosed, warn user
+			if ($(ttcline).val() === null){
+					alert("Choose a line!");
+			} else {
+
+				var line = getLineByID($(ttcline).val());
+				//line is added to the Simulator
+				line.onSim = true;
+				//udpade options on select form
+				updateOptions(line);
+
+				//Creating a new line area inside the canvas with a plain line draw
+				var deleteButton = "<div class='delete btn btn-danger btn-xs' onclick='removeLine("+line.id+"); return false;' >Delete</div>";
+				$(canvas).append( "<div id='line_" + line.id + "'><div id='desc'><h5>"  + line.name  + deleteButton+ "</h5></div><div id='track'></div>");
+
+				//Inseting the stops according to its position in the line
+				addStops(line);
+
+				//Inserting the buses
+				addBuses(line);
+			}
+			
+		}
+
+		/* change the traffic delay on the clicked segment */
+		var changeTraffic = function(event){
+			var target = event.target;
+			if($(target).css('background-color') === "rgb(204, 51, 51)"){ //red
+				$(target).css('background-color', '#FFFF00');
+			} else if ($(target).css('background-color') === "rgb(255, 255, 0)"){ //yellow
+				$(target).css('background-color', '#FFCB05');
+			} else { //orange
+				$(target).css('background-color', '#CC3333');
+			}
+		}	
+
+		/* return a traffic factor, given the segment color*/
+		var trafficFactor = function(segmentID){
+			if ($("#"+segmentID).css('background-color') === "rgb(255, 255, 0)") //yellow
+				return Tyellow;
+			else if ($("#"+segmentID).css('background-color') === "rgb(255, 203, 5)") //orange
+				return Torange;
+			else //red
+				return Tred;		
+		}	
+
+		/* remove line from canvas */
+		var removeLine = function(lineID){
+			var line = getLineByID(lineID);	
+			//line is removed from the simulator
+			line.onSim = false;
+			$('#line_'+line.id).remove();
+			//udpade options on select form
+			updateOptions_delLine(line);
+		}
+
+
+	/*=======PEOPLE RELATED=======*/
+
+		/* add people on the canvas */
+		var addPeople = function(){
+				//if any item is not choose, warn the user
+				if ($(lineSim).val() === null){
+					alert("Choose a line!");
+				} else if ($(origin).val() === null) {
+					alert("Choose an origin stop!");
+				} else if ($(destination).val() === null){
+					alert("Choose a destination stop!");
+				} else {
+					var line_id = $(lineSim).val();
+					var originStop = getStopByID($(origin).val());
+					var currentPassengers = originStop.passengers.length;
+					//add people array to the origin stop
+					for (var i = 0; i < $(quantity).val(); i++ ){
+						originStop.passengers.push(new Person(currentPassengers+i,line_id,originStop.id,$(destination).val()));
+					}				
+					//Display people on the screen
+					//$('#line_' + line_id  + ' #stop_' + originStop.id + '_people').html(originStop.passengers.length); 
+					originStop.showPeople();
+				}
+
+		}
+
+		/* add random people on the canvas */
+		var addRandomPeople = function(){
+				console.log("add random people - NOT IMPLEMENTED");
+		}
+
+
+	/*=======STOP RELATED=======*/	
+
+		/* Show stop name on a pop up when mouse over it */
+		var stopInfo = function(stop_id){
+			var stop = getStopByID(stop_id);
+			//console.log(stop.id+"->"+stop.name);
+			$('#stop_' + stop_id).popover({'content': stop.name});
+			$('#stop_' + stop_id).popover('toggle');
+		}		
+
+
+		/* Add stops on canvas and bus animation */
+		var addStops = function(line){
+
+			//Dividing the 100% space of the line into the stops.
+			distance = 100 / (line.stops.length - 1);
+			distanceBus = 98 / (line.stops.length - 1);	
+			
+			
+			//Distribuiting the calculated distance among stops.
+			for (var i = 0; i < line.stops.length; i++){
+
+				//If it is the last station, it will be placed at very end point of the line.
+				if(i === (line.stops.length - 1)){
+					//Adding stop
+					$('#line_' + line.id + ' #track').append("<div id='stop_"+ line.stops[i].id +"' class='stop' data-toggle='popover' data-placement='bottom'  onmouseover='stopInfo("+line.stops[i].id+")' style='left: 100%;'></div>");
+					line.stops[i].location = 100;
+					
+					//ADD LOCATION(DISTANCE) TO CURRENT STOP
+					line.stops[i].location = distance * i;
+
+				} else {
+					//Adding stop
+					$('#line_' + line.id + ' #track').append("<div id='stop_"+ line.stops[i].id +"' class='stop' data-toggle='popover' data-placement='bottom'  onmouseover='stopInfo("+line.stops[i].id+")' style='left: " + distance * i + "%;'></div>");					line.stops[i].location = distance * i;					//Adding segment
+					$('#line_' + line.id + ' #track').append("<div id='stop_" + line.stops[i].id +"_seg' class='segment' style='left: " + distance * i + "%; background-color: #FFFF00; height: 5px; width: " + distance + "%' onclick='changeTraffic(event)'></div>");
+					//ADD LOCATION(DISTANCE) TO CURRENT STOP
+					line.stops[i].location = distance * i;
+					
+				}
+				//APPEND DIV TO HOLD PASSENGERS
+				$('#line_' + line.id  + ' #track').append("<div id='stop_"+ line.stops[i].id +"_people' class='people' style='left: " + line.stops[i].location + "%;'>"+line.stops[i].passengers.length+"</div>");
+			}
+			
+		}
+
+
+
+	/*=======BUSES RELATED=======*/
+
+	/* Show the bus information on the Buses Tab when click on it */
+	var busInfo = function(event){
+		var busID = $(event.target).attr('id'); //id on HTML: bus_xx
+		var bus_id = busID.split("_")[1];				//id on DB: xx
+		var bus = getBusByID(bus_id);
+		$("#busInfo").remove();
+
+		//Add table with bus info
+		$('#buses').append("<div id='busInfo'><table class='table table-hover'><thead><tr><th>BUS</th><th>"+bus.id+ "</th></tr></thead><tbody><tr><td>Line</td><td>"+ bus.currentLine.name+ "</td></tr><tr><td>Passengers</td><td>"+bus.passengers.length+"</td></tr><tr><td>Maximum Capacity</td><td>"+bus.maxCapacity+"</td></tr><tr><td>Status</td><td>"+bus.status+"</td></tr><tr><td>Current Stop</td><td>"+bus.currentStop.name+"</td></tr><tr><td>Time to next stop</td><td>"+timeNextStop(bus)+"</td></tr></tbody></table></div>");
+		toggleBusesTab();
+
+	}
+
+	/* Add buses on canvas */
+	var addBuses = function(line){
+
+		//Adding buses		
+		for (var i = 0; i < line.buses.length; i += 1) {
+			$('#line_'+ line.id).append("<div class='bus' id='bus_"+line.buses[i].id+"' onclick='busInfo(event)' ><p id='bus_"+line.buses[i].id+"' onclick='busInfo(event)'>" + line.buses[i].passengers.length + "</p></div>");
+       	}	
+		
+		/*** JUST PRINTING POSITION OF THE BUS***/
+		var PRINT = setInterval(function(){
+			var bus_position;
+			bus_position = $('#bus_'+line.buses[0].id).css('left');
+			//console.log(bus_position);
+			//alert("DEU");
+		},200);		
+	}
+	
+	function compare(event1,event2) {
+		if (event1.time < event2.time)
+		   return -1;
+		if (event1.time > event2.time)
+		  return 1;
+		return 0;
+	}
+
+	/* onload initialize the time departure for all buses */
+	var initializeTimeDeparture = function (){		
+			for(var i = 0; i < lines.length; i++){
+				for(var j = 0 ; j <lines[i].buses.length; j++){
+					eventList.push(new Event(lines[i].timetable.splice(0,1)[0], moveBus, lines[i].buses[j]));
+				}
+			}
+			eventList.sort(compare);
+	}
+
+	var startAnimation = function(){
+			while (eventList.length > 0 && eventList[0].time === getTime()){
+				eventList[0].execute();
+				eventList.splice(0,1);
+			}		
+	}
+/*
+	var startAnimation2 = function(){
+		
+		//EACH LINE Run through all the lines
+		for(var i = 0; i < lines.length; i++){
+			//only moveBus for the lines on the Simulator
+			if(lines[i].onSim === true){
+				for(var j = 0 ; j <lines[i].buses.length; j++){
+					if(lines[i].buses[j].departureTime == getTime())
+						moveBus(lines[i], lines[i].buses[j]);
+				}
+			}
+		}
+	 }
+*/
+	  
+		var add1 = function(timer){
+			if(timer[1] === 59){
+				if(timer[0] === 23){
+					timer[0] = 0;
+				} else {
+					timer[0] += 1;
+				}
+			timer[1] = 0;
+			} else {
+				timer[1] += 1;
+			}
+			return timer;
+		}
+
+		var computeTime = function(offset,interval){
+			var timer = offset.split(":");
+			interval = interval/1000;
+			timer[0] = parseInt(timer[0]);
+			timer[1] = parseInt(timer[1]);
+			while(interval > 0){
+				timer = add1(timer);
+				interval--;
+			}	
+		
+			//FIRST-ZERO
+			if(timer[0] < 10){
+				timer[0] = "0" + timer[0];
+			}
+			if(timer[1] < 10){
+				timer[1] = "0" + timer[1];
+			}
+			return timer.join(':');
+
+		}
+
+
+		var moveBus = function (bus){
+				if (bus.currentLine.onSim === false) return 0;
+				bus.currentStop = bus.currentLine.stops[bus.currentStopIndex];
+				nextStop = bus.currentLine.stops[bus.currentStopIndex+1];
+				Tstop = timeStopped(bus);
+				Trun = timeNextStop(bus);
+				nextEventTime = computeTime(getTime(),Tstop+Trun);
+					
+				console.log('Bus: '+ bus.id + ' Current stop: ' + bus.currentStop.name);
+				//TIME STOPPED
+				console.log(bus.currentStop.location + "% - time stopped: "+Tstop);
+				$( "#bus_"+bus.id ).animate({
+					left : bus.currentStop.location + "%"
+				}, Tstop);
+				bus.removePeople(bus.currentStop);
+				bus.addPeople();
+			
+				//START MOVEMENT
+				console.log("time to next stop: "+Trun); 
+				$( "#bus_"+bus.id ).animate({
+					left : nextStop.location + "%"
+				},Trun);	
+				bus.currentStopIndex += 1;
+				//schedule next event
+				if (bus.currentStopIndex < bus.currentLine.stops.length-1){			 
+					eventList.push(new Event(nextEventTime, moveBus, bus));
+				} else { 
+					eventList.push(new Event(nextEventTime, lastMoveBus, bus));		
+				}	
+				eventList.sort(compare);
+		}
+
+		var lastMoveBus = function (bus){
+
+				bus.currentStop = bus.currentLine.stops[bus.currentStopIndex];
+				nextStop = bus.currentLine.stops[0];
+				Tstop = timeStopped(bus);
+				Trun = timeRestart;
+				
+
+				console.log('Bus: '+ bus.id + ' Current stop: ' + bus.currentStop.name);
+				//TIME STOPPED - LAST STOP
+				console.log(bus.currentStop.location + "% - time stopped: "+Tstop);
+				$( "#bus_"+bus.id ).animate({
+					left : bus.currentStop.location + "%"
+				}, Tstop);
+				bus.removePeople(bus.currentStop);
+			
+				//START MOVEMENT TO TERMINAL
+				console.log("time to next stop: "+Trun); 
+				$( "#bus_"+bus.id ).animate({
+					left : nextStop.location + "%"
+				},Trun);	
+			
+				if (bus.currentLine.timetable.length > 0){
+
+					nextEventTime = bus.currentLine.timetable.splice(0,1)[0];
+					//schedule next event	 
+					eventList.push(new Event(nextEventTime, moveBus, bus));
+		
+					bus.currentStopIndex = 0;
+					console.log("RESTART EVENT: "+nextEventTime);
+					eventList.sort(compare);
+				}
+	}
+	 
+
+
+
+	/*=======TIME RELATED=======*/
+	
+	/* compute time of the stopped bus */
+	var timeStopped = function(bus){
+		return bus.getPassengersGetOn()*timeToGetOn;
+	}
+	
+
+	/* compute time to next stop */
+	var timeNextStop = function (bus){
+		var segmentID = "stop_" + bus.currentStop.id + "_seg";
+		return  trafficFactor(segmentID);
+	}
+	
+	
+
+
+	/*=======LAYOUT FUNCTIONS=======*/
+
+	/* Functions to show tabs*/
+	var toggleLinesTab = function(){
+		$('#sidebarTab a[href="#lines"]').tab('show');
+	}
+	var togglePeopleTab = function(){
+		$('#sidebarTab a[href="#people"]').tab('show');
+	}
+	var toggleBusesTab = function(){
+		$('#sidebarTab a[href="#buses"]').tab('show');
+	}
+	var toggleHomeTab = function(){
+		$('#sidebarTab a[href="#home"]').tab('show');
+	}

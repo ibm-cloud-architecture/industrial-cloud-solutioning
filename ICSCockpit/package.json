@@ -1,0 +1,15 @@
+{
+	"name": "ICSCockpit",
+	"version": "0.0.1",
+	"description": "ICS cockpit application",
+	"dependencies": {
+		"ibm_db": "~0.0.1",
+		"express": "3.4.7",
+		"ejs": "*"
+	},
+	"engines": {
+		"node": "0.10.26"
+	},
+    "scripts":{"start":"node app.js"},
+	"repository": {}
+}

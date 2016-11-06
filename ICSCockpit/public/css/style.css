@@ -1,0 +1,147 @@
+* {
+	list-style: none;
+}
+
+#animation{
+	border:1px solid #c3c3c3;
+	position: relative;
+	min-height: 500px;
+	padding-top: 20px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+div[id^="line_"]{
+	margin-bottom: 30px;
+}
+
+div[id^="line_"] h5{
+	margin-bottom: 20px;
+}
+
+a {
+	cursor:pointer;
+}
+
+#track{
+	position: relative;
+	width: 100%;
+	height: 5px;
+	background-color: #FFFF00;
+	margin-bottom: 15px;
+}
+
+.stop{
+	border: 2px solid #000;
+	position: absolute;
+	top: -3px;
+	border-radius: 50%;
+	height: 10px;
+	width: 10px;
+	background-color: #0f0;
+	z-index: 1;
+	//font-size: 1px;
+}
+
+.people{
+	#border: 1px solid #000;
+	position: absolute;
+	top: -25px;
+	#border-radius: 50%;
+	height: 20px;
+	width: 20px;
+	background-color: #0000;
+	z-index: 2;
+}
+
+.bus{
+	background-color: rgb(0,255,0);
+	position: relative;
+	margin: 5px;
+	margin-left: -14px;
+	width: 30px;
+	border:1px solid #c0c0c0;
+	padding:0.5%;
+	left:0%;
+	cursor:pointer;
+	text-align: center;
+}
+ 
+ 
+.bus p{
+    margin: -3px;
+    font-size: 10px;	
+}
+
+.segment{
+	position: absolute;
+	top: 0;
+	display: inline-block;
+}
+
+
+
+.delete{
+	margin-left: 1%;	
+	height: 12px;
+	width: 12px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.delete img {
+	width: auto;
+    	height: 150%;
+	vertical-align:bottom;
+}
+
+.buttons{
+	height: 20px;
+	width: 20px;
+	display: inline-block;
+	margin: 15px 5px 35px 0px;
+	
+}
+
+.buttons img {
+   	width: auto;
+    	height: 200%;
+} 
+
+.disabled {
+	opacity:0.40;
+	-moz-opacity: 0.40;
+	filter: alpha(opacity=40);
+	cursor: default;
+}
+
+.abled{
+	cursor: pointer;
+}
+
+.menu{
+	height: 25px;
+	width: 30px;
+	display: inline-block;
+	margin: 10px 5px 5px;
+	cursor: pointer;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.menu img {
+	width: auto;
+    	height: 200%;
+}
+
+
+div.floating-menu {position:fixed;background:#fff4c8;border:1px solid #ffcc00;width:150px;z-index:100;}
+div.floating-menu a, div.floating-menu h3 {display:block;margin:0 0.5em;}
+</style>
+<div class="floating-menu">
+<h3>Floating Menu</h3>
+<a href="http://www.quackit.com/css/">CSS</a>
+<a href="http://www.quackit.com/html/">HTML</a>
+<a href="http://www.quackit.com/javascript/">JavaScript</a>
+<a href="http://www.quackit.com/coldfusion/">ColdFusion</a>
+<a href="http://www.quackit.com/myspace/codes/">MySpace Codes</a>
+</div>
