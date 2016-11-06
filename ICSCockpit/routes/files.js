@@ -7,13 +7,13 @@ exports.insertStops = function(ibmdb,connString) {
 			 res.send("error occurred " + err.message);
 			}
 			else {
-				xmlDoc=loadXMLDoc("./views/stops84.xml");
+				xmlDoc=loadXMLDoc("./views/Facilities.xml");
 
-				x=xmlDoc.getElementsByTagName('stop');
+				x=xmlDoc.getElementsByTagName('Facility');
 				for (i=0;i<x.length;i++)
 				{
-					conn.query("INSERT INTO stop (id, name, gpslat, gpslon) VALUES (" + x[i].getAttribute('stopId') + ", " + x[i].getAttribute('title')
-					 	+ ", " + x[i].getAttribute('lat') + ", " + x[i].getAttribute('lon') + ")", function(err, data) {
+					conn.query("INSERT INTO FACILITIES (Facility_Id, Facility_Name,Facility_Type, gpslat, gpslon) VALUES (" + x[i].getAttribute('Facility_Id') + ", " + x[i].getAttribute('Facility_Name')
+					 	+ "," + x[i].getAttribute('lat') + ", " + x[i].getAttribute('lon') + ")", function(err, data) {
 							
 						if ( !err ) { 
 							res.render('tablelist', {
