@@ -1,6 +1,7 @@
 Get started with ${app}
 -----------------------------------
-Welcome to your new Node.js app!
+
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/ibm-cloud-architecture/industrial-cloud-solutioning/tree/master/ICSCockpit # [required])
 
 Node.js app runs on a server-side high performance, highly scalable, event-driven environment with non-blocking I/O that is programmed with the JavaScript programming language.
 
