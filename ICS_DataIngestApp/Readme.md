@@ -67,4 +67,5 @@ Copy broker URL reference from binded message hub reference to application examp
 
 To test locally from Eclipse refer to my earlier mail with REST Client
   
-  
+  Refer Video for more details:
+  https://ibm.box.com/s/5eg9o2qx7kal9ks1nnos3i2p09ydj9x0
