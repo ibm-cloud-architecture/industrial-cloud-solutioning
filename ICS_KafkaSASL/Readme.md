@@ -9,3 +9,6 @@
      <br/>
      https://ibm.box.com/s/6lhz833ghgd659p6wjfq1xkjw0wg9e5r
      
+    <br/>
+    <h2>References</h2>
+    https://www.ibm.com/blogs/bluemix/2015/10/streaming-analytics-message-hub-2/
