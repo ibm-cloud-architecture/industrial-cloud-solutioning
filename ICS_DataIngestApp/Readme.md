@@ -4,6 +4,8 @@ Description: The application connects to ftp server configured on Softlayer and 
 
 1. Import the code in Eclipse with WebSphere Liberty Server running locally.
 2. Modify and update Server.xml of existing liberty with below entries:
+
+    <sample>
       <library id="kafkaLoginLib">
           <fileset dir="${shared.resource.dir}/kafkalibs" includes="messagehub.login-*.jar"/>
       </library>
@@ -12,8 +14,9 @@ Description: The application connects to ftp server configured on Softlayer and 
     	  <options password="vAXdqbmokRDlG9QitbwA4ddOquRkSmej" serviceName="kafka" username="br1XTccWWjOvzxiv"/>
      </jaasLoginModule>
      <jaasLoginContextEntry id="KafkaClient" loginModuleRef="KafkaClient" name="KafkaClient"/>
-     
-     Where username= "Username of existing Message Hub Instance"
+    </sample>
+    <br/>
+     Where username= "Username of existing Message Hub Instance" <br/>
            password="Password of existing Message Hub Instance"
            
      Copy folder containing message hub dependencies into Liberty server resource directory before making above reference in server.xml.
