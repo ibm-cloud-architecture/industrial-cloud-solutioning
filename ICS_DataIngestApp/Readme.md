@@ -8,6 +8,7 @@ https://ibm.ent.box.com/file/113454210741
 <br>1. This application is tested using the ftp server configured on Softlayer. <br/>
 <br>2. The Subscriber application is Java based as of now but will be changed to streams without any modification in code<br/>
 
+<h2> Application Configuration Steps </h2>
 1. Import the code in Eclipse with WebSphere Liberty Server running locally. <br/>
 2. Modify and update Server.xml of existing liberty with below entries:<br/>
 
