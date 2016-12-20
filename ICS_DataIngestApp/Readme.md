@@ -13,8 +13,8 @@ Description: The application connects to ftp server configured on Softlayer and 
      </jaasLoginModule>
      <jaasLoginContextEntry id="KafkaClient" loginModuleRef="KafkaClient" name="KafkaClient"/>
      
-     Where username=<Username of existing Message Hub Instance>
-           password=<Password of existing Message Hub Instance>
+     Where username= "Username of existing Message Hub Instance"
+           password="Password of existing Message Hub Instance"
            
      Copy folder containing message hub dependencies into Liberty server resource directory before making above reference in server.xml.
      
@@ -22,7 +22,7 @@ Description: The application connects to ftp server configured on Softlayer and 
                wlp/bin/server package defaultServer --include=usr
                
   4. Deploy the application on Bluemix as "Liberty for Java" app using below command.
-               bluemix cf push <yourappname> -p wlp/usr/servers/defaultServer/defaultServer.zip
+               bluemix cf push "yourappname" -p wlp/usr/servers/defaultServer/defaultServer.zip
                
      Refer below link for more details (Section: Packaged Server):
      
@@ -30,13 +30,13 @@ Description: The application connects to ftp server configured on Softlayer and 
                
   5. Bind the deployed application with existing message hub service instance and restage the application.
   
-  6. Triggering the application
+  Triggering the application
      ---------------------------
    
    To trigger the application use the below URL and details:
    
 Endpoint URL:
-https://<appURL>/DataInjestAppWeb/rest/testservice/fetchAssetData?cat=prod&load=product&batchsize=40
+https://appURL/DataInjestAppWeb/rest/testservice/fetchAssetData?cat=prod&load=product&batchsize=40
 
 Attributes:
 
