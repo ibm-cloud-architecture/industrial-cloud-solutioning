@@ -1,7 +1,6 @@
 <h1>Steps to Build and Deploy Application on Bluemix </h1>
 ------------------------------------------------------
-<b>Author: Sharad Chandra</b>
-<b>schandr1@in.ibm.com</b>
+<b>Author: Sharad Chandra</b><br/>
 <h2>Description:</h2> The application connects to ftp server configured on Softlayer and Ingest batches of data ranging from 1 (tuple by tuple) to whatever specified by the user in REST URL parameter. This application needs to be deployed on Bluemix either as Liberty docker or cloud foundary liberty application. The below dexcription talks about deployment as cloud foundary application. The implementation of code is in line with the architecture mentioned in this reference: <br/>
 
 https://ibm.ent.box.com/file/113454210741
@@ -77,6 +76,8 @@ https://appURL/DataInjestAppWeb/rest/testservice/fetchAssetData?cat=prod&load=pr
           <td>facility</td><td>/home/nprathap/ICSLZ/Load_Facility_Master1.csv</td>
          </tr>
    </table>
+   <br/>
+   <b>batchsize:</b> "the value can range from 2 to users choice". By default it will ingest one line at a time.<br/>
 <b>apiKey:</b> "copy apiKey from binded message hub reference to application" <br/>
 <b>user:</b> "copy username from binded message hub reference to application" <br/>
 <b>password:</b> "copy password from binded message hub reference to application" <br/>
