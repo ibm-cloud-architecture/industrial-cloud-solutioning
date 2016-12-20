@@ -1,6 +1,6 @@
 <b>Author: Sharad Chandra </b><br/>
 
-This code is used to test data Ingestion into client application without much Infrastructure. Existing code of KafkaSASLConsumer application has been customized to act as suscriber. In actual scenario it will be Infosphere streams based application which will act as subscriber. <br/>
+This code is used to test data Ingestion into client application without much Infrastructure. Existing code of MessageHubKafkaSASL application has been customized to act as suscriber. In actual scenario it will be Infosphere streams based application which will act as subscriber. <br/>
 
 To run this code locally follow the below steps:
 
