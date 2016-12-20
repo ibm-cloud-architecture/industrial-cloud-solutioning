@@ -1,4 +1,8 @@
-This code is the quickest way to test data Ingestion into client application. To run this code locally follow the below steps:
+<b>Author: Sharad Chandra </b><br/>
+
+This code is used to test data Ingestion into client application without much Infrastructure. Existing code of MessageHubSASL application has been customized to act as suscriber. In actual scenario it will be Infosphere streams based application which will act as subscriber. <br/>
+
+To run this code locally follow the below steps:
 
 1. Import the code in eclipse workspace.
 2. The libraries are available with code. Resolve dependencies using these jars using standard eclipse procedure.
