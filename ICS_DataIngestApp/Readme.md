@@ -1,5 +1,7 @@
 Steps to Build and Deploy Application on Bluemix
 -------------------------------------------------
+Description: The application connects to ftp server configured on Softlayer and Ingest batches of data ranging from 1 (tuple by tuple) to whatever specified by the user in REST URL parameter. This application needs to be deployed on Bluemix either as Liberty docker or cloud foundary liberty application. The below dexcription talks about deployment as cloud foundary application. 
+
 1. Import the code in Eclipse with WebSphere Liberty Server running locally.
 2. Modify and update Server.xml of existing liberty with below entries:
       <library id="kafkaLoginLib">
@@ -52,9 +54,9 @@ ii) load
         c) vendor        /home/nprathap/ICSLZ/Load_VendorMaster3.csv
         d) facility        /home/nprathap/ICSLZ/Load_Facility_Master1.csv
 
-apiKey: <copy apiKey from binded message hub reference to application>
-user: <copy username from binded message hub reference to application>
-password: <copy password from binded message hub reference to application>
+apiKey: <copy apiKey from binded message hub reference to application> <br/>
+user: <copy username from binded message hub reference to application> <br/>
+password: <copy password from binded message hub reference to application> <br/>
 
 Copy broker URL reference from binded message hub reference to application example -
   "kafka_brokers_sasl": [
