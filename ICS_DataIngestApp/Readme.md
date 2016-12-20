@@ -1,6 +1,10 @@
 <h1>Steps to Build and Deploy Application on Bluemix </h1>
--------------------------------------------------
-<h2>Description:</h2> The application connects to ftp server configured on Softlayer and Ingest batches of data ranging from 1 (tuple by tuple) to whatever specified by the user in REST URL parameter. This application needs to be deployed on Bluemix either as Liberty docker or cloud foundary liberty application. The below dexcription talks about deployment as cloud foundary application. 
+------------------------------------------------------
+<b>Author: Sharad Chandra</b>
+<b>schandr1@in.ibm.com</b>
+<h2>Description:</h2> The application connects to ftp server configured on Softlayer and Ingest batches of data ranging from 1 (tuple by tuple) to whatever specified by the user in REST URL parameter. This application needs to be deployed on Bluemix either as Liberty docker or cloud foundary liberty application. The below dexcription talks about deployment as cloud foundary application. The implementation of code is in line with the architecture mentioned in this reference: <br/>
+
+https://ibm.ent.box.com/file/113454210741
 
 1. Import the code in Eclipse with WebSphere Liberty Server running locally. <br/>
 2. Modify and update Server.xml of existing liberty with below entries:<br/>
@@ -39,33 +43,51 @@
 Endpoint URL:<br/>
 https://appURL/DataInjestAppWeb/rest/testservice/fetchAssetData?cat=prod&load=product&batchsize=40
 <br/>
-Attributes:<br/>
+<h2>Attributes:</h2><br/>
 
- i) cat<br/>
-       value        topic<br/>
-    a) prod        inventory<br/>
-    b) wh            facility<br/>
-    c) vend        openorder<br/>
-    d) fac            shipment<br/>
-
-ii) load<br/>
-           value        path<br/>
-        a) product        /home/nprathap/ICSLZ/Product_Master.csv<br/>
-        b) warehouse    /home/nprathap/ICSLZ/Load_Warehouse_Master1.csv<br/>
-        c) vendor        /home/nprathap/ICSLZ/Load_VendorMaster3.csv<br/>
-        d) facility        /home/nprathap/ICSLZ/Load_Facility_Master1.csv<br/>
-
-apiKey: "copy apiKey from binded message hub reference to application" <br/>
-user: "copy username from binded message hub reference to application" <br/>
-password: "copy password from binded message hub reference to application" <br/>
+<h3> i) cat</h3>
+ <table style="width:100%">
+    <td>value</td><td>topic</td>
+    <tr>
+      <td>prod</td><td>inventory</td>
+    </tr>  
+    <tr>
+      <td>wh</td><td>facility</td>
+    </tr> 
+    <tr>
+      <td>vend</td><td>openorder</td>
+    </tr>  
+    <tr>
+      <td>fac</td><td>shipment</td>
+    </tr>  
+</table>
+ <h3>ii) load</h3>
+<table style="width:100%">
+       <td>value</td><td>path</td>
+       <tr>
+        <td>product</td><td>/home/nprathap/ICSLZ/Product_Master.csv</td>
+        </tr>
+        <tr>
+         <td>warehouse</td><td>/home/nprathap/ICSLZ/Load_Warehouse_Master1.csv</td>
+         </tr>
+         <tr>
+         <td>vendor</td><td>/home/nprathap/ICSLZ/Load_VendorMaster3.csv</td>
+         </tr>
+         <tr>
+          <td>facility</td><td>/home/nprathap/ICSLZ/Load_Facility_Master1.csv</td>
+         </tr>
+   </table>
+<b>apiKey:</b> "copy apiKey from binded message hub reference to application" <br/>
+<b>user:</b> "copy username from binded message hub reference to application" <br/>
+<b>password:</b> "copy password from binded message hub reference to application" <br/>
 
 Copy broker URL reference from binded message hub reference to application example - <br/>
-  "kafka_brokers_sasl": &#91;
-          "kafka01-prod02.messagehub.services.eu-gb.bluemix.net:9093",
-          "kafka02-prod02.messagehub.services.eu-gb.bluemix.net:9093",
-          "kafka03-prod02.messagehub.services.eu-gb.bluemix.net:9093",
-          "kafka04-prod02.messagehub.services.eu-gb.bluemix.net:9093",
-          "kafka05-prod02.messagehub.services.eu-gb.bluemix.net:9093"
+  "kafka_brokers_sasl": &#91;<br/>
+          "kafka01-prod02.messagehub.services.eu-gb.bluemix.net:9093",<br/>
+          "kafka02-prod02.messagehub.services.eu-gb.bluemix.net:9093",<br/>
+          "kafka03-prod02.messagehub.services.eu-gb.bluemix.net:9093",<br/>
+          "kafka04-prod02.messagehub.services.eu-gb.bluemix.net:9093",<br/>
+          "kafka05-prod02.messagehub.services.eu-gb.bluemix.net:9093"<br/>
         &#93;
 
 To test locally from Eclipse refer to my earlier mail with REST Client
