@@ -8,13 +8,13 @@ Description: The application connects to ftp server configured on Softlayer and 
     &#60;code&#62;
       &#60;library id="kafkaLoginLib"&#62;
           &#60;fileset dir="${shared.resource.dir}/kafkalibs" includes="messagehub.login-*.jar"&#47;&#62;
-      &#60;&#47;/library&#62;
+      &#60;&#47;library&#62;
       
-     <jaasLoginModule className="com.ibm.messagehub.login.MessageHubLoginModule" id="KafkaClient" libraryRef="kafkaLoginLib">
-    	  <options password="vAXdqbmokRDlG9QitbwA4ddOquRkSmej" serviceName="kafka" username="br1XTccWWjOvzxiv"/>
-     </jaasLoginModule>
-     <jaasLoginContextEntry id="KafkaClient" loginModuleRef="KafkaClient" name="KafkaClient"/>
-    </code>
+     &#60;jaasLoginModule className="com.ibm.messagehub.login.MessageHubLoginModule" id="KafkaClient" libraryRef="kafkaLoginLib"&#62;
+    	  &#60;options password="vAXdqbmokRDlG9QitbwA4ddOquRkSmej" serviceName="kafka" username="br1XTccWWjOvzxiv"&#47;&#62;
+     &#60;&#47;jaasLoginModule&#62;
+     &#60;jaasLoginContextEntry id="KafkaClient" loginModuleRef="KafkaClient" name="KafkaClient"&#47;&#62;
+  
     <br/>
      Where username= "Username of existing Message Hub Instance" <br/>
            password="Password of existing Message Hub Instance"
