@@ -6,6 +6,7 @@
 <br>1. This application is tested using the ftp server configured on Softlayer. <br/>
 <br>2. The Subscriber application is Java based as of now but will be changed to streams without any modification in code<br/>
 
+
 <h2> Application Configuration Steps </h2>
 1. Import the code in Eclipse with WebSphere Liberty Server running locally. <br/>
 2. Modify and update Server.xml of existing liberty with below entries:<br/>
@@ -35,6 +36,9 @@
      https://console.ng.bluemix.net/docs/runtimes/liberty/optionsForPushing.html
            <br/>    
   5. Bind the deployed application with existing message hub service instance and restage the application.
+  
+  6. Create necessary topics as mentioned in below image:
+  ![alt tag](https://github.com/ibm-cloud-architecture/industrial-cloud-solutioning/blob/master/ICS_DataIngestApp/Topics.png)
   
  <h1> Triggering the application </h1>
 --------------------------------
