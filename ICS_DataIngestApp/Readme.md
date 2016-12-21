@@ -24,7 +24,7 @@ https://ibm.ent.box.com/file/113454210741
      Where username= "Username of existing Message Hub Instance" <br/>
            password="Password of existing Message Hub Instance"
            
-     <b>Note: </b>Copy folder containing message hub dependencies into Liberty server resource directory before making above reference in server.xml.
+     <b>Note: </b>Copy folder containing message hub dependencies into Liberty server resource directory before making above reference in server.xml. The details could be found in this github <b>industrial-cloud-solutioning/ICS_KafkaLibs/</b>
      <br/>
   3. Export the server configuration by running below command or from eclipse by rt click on liberty server <br/>
                wlp/bin/server package defaultServer --include=usr
