@@ -2,7 +2,9 @@
 ------------------------------------------------------
 <b>Author: Sharad Chandra</b><br/>
 <h2>Description:</h2> The application connects to ftp server configured on Softlayer and Ingest batches of data ranging from 1 (tuple by tuple) to whatever specified by the user in REST URL parameter. This application needs to be deployed on Bluemix either as Liberty docker or cloud foundary liberty application. The below dexcription talks about deployment as cloud foundary application. The implementation of code is in line with the architecture mentioned in this reference: <br/>
-
+<br/>
+![alt tag](https://github.com/ibm-cloud-architecture/industrial-cloud-solutioning/blob/master/ICS_DataIngestApp/DataIngestArchitecture.png)
+<br/>
 https://ibm.ent.box.com/file/113454210741
 
 <br>1. This application is tested using the ftp server configured on Softlayer. <br/>
