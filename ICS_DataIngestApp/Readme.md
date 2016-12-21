@@ -95,7 +95,13 @@ Copy broker URL reference from binded message hub reference to application examp
           "kafka05-prod02.messagehub.services.eu-gb.bluemix.net:9093"<br/>
         &#93;
 
-To test locally from Eclipse refer to my earlier mail with REST Client
+To test this code through REST call locally from Eclipse refer to REST Client code - ICS_JavaRESTClient
   <br/>
   Refer Video for more details: <br/>
+  <h3>Java Client Integration</h3><br/>
   https://ibm.box.com/s/5eg9o2qx7kal9ks1nnos3i2p09ydj9x0
+  <br/>
+  <h3>Infosphere Streams Integration</h3>
+  <br/>
+  https://ibm.box.com/s/6lhz833ghgd659p6wjfq1xkjw0wg9e5r
+  
