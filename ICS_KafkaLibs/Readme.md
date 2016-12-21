@@ -7,3 +7,5 @@ After copying the foder the reference must me made in server.xml like below:
  
  These libraries are must to make DataIgestApplication run. <br/>
  Refer ICS_DataIngestApp Readme for more details. 
+
+![alt tag](https://github.com/ibm-cloud-architecture/industrial-cloud-solutioning/blob/master/ICS_KafkaLibs/kafkalib.png)
