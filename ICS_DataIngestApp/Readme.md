@@ -86,18 +86,11 @@ https://appURL/DataInjestAppWeb/rest/testservice/fetchAssetData?cat=prod&load=pr
 <b>user:</b> "copy username from binded message hub reference to application" <br/>
 <b>password:</b> "copy password from binded message hub reference to application" <br/>
 
-Copy broker URL reference from binded message hub reference to application example - <br/>
-  "kafka_brokers_sasl": &#91;<br/>
-          "kafka01-prod02.messagehub.services.eu-gb.bluemix.net:9093",<br/>
-          "kafka02-prod02.messagehub.services.eu-gb.bluemix.net:9093",<br/>
-          "kafka03-prod02.messagehub.services.eu-gb.bluemix.net:9093",<br/>
-          "kafka04-prod02.messagehub.services.eu-gb.bluemix.net:9093",<br/>
-          "kafka05-prod02.messagehub.services.eu-gb.bluemix.net:9093"<br/>
-        &#93;
-
 To test this code through REST call locally from Eclipse refer to REST Client code - ICS_JavaRESTClient
   <br/>
-  Refer Video for more details: <br/>
+  Refer Videos for more details: <br/>
+  <h3>Batch Ingestion Demo Introduction</h3>
+   https://ibm.box.com/s/kq5vyj47pbnayanleywx9zlccpl6t7bu
   <h3>Java Client Integration</h3><br/>
   https://ibm.box.com/s/5eg9o2qx7kal9ks1nnos3i2p09ydj9x0
   <br/>
