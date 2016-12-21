@@ -24,7 +24,7 @@ https://ibm.ent.box.com/file/113454210741
      Where username= "Username of existing Message Hub Instance" <br/>
            password="Password of existing Message Hub Instance"
            
-     Copy folder containing message hub dependencies into Liberty server resource directory before making above reference in server.xml.
+     <b>Note: </b>Copy folder containing message hub dependencies into Liberty server resource directory before making above reference in server.xml.
      <br/>
   3. Export the server configuration by running below command or from eclipse by rt click on liberty server <br/>
                wlp/bin/server package defaultServer --include=usr
