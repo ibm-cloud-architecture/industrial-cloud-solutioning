@@ -1,11 +1,7 @@
 <h1>Steps to Build and Deploy Application on Bluemix </h1>
 ------------------------------------------------------
 <b>Author: Sharad Chandra</b><br/>
-<h2>Description:</h2> The application connects to ftp server configured on Softlayer and Ingest batches of data ranging from 1 (tuple by tuple) to whatever specified by the user in REST URL parameter. This application needs to be deployed on Bluemix either as Liberty docker or cloud foundary liberty application. The below dexcription talks about deployment as cloud foundary application. The implementation of code is in line with the architecture mentioned in this reference: <br/>
-<br/>
-![alt tag](https://github.com/ibm-cloud-architecture/industrial-cloud-solutioning/blob/master/ICS_DataIngestApp/DataIngestArchitecture.png)
-<br/>
-https://ibm.ent.box.com/file/113454210741
+<h2>Description:</h2> The application connects to ftp server configured on Softlayer and Ingest batches of data ranging from 1 (tuple by tuple) to whatever specified by the user in REST URL parameter. This application needs to be deployed on Bluemix either as Liberty docker or cloud foundary liberty application. The below dexcription talks about deployment as cloud foundary application. The implementation of code is in line with the architecture mentioned at the bottom: <br/>
 
 <br>1. This application is tested using the ftp server configured on Softlayer. <br/>
 <br>2. The Subscriber application is Java based as of now but will be changed to streams without any modification in code<br/>
@@ -100,3 +96,4 @@ To test this code through REST call locally from Eclipse refer to REST Client co
   <br/>
   https://ibm.box.com/s/6lhz833ghgd659p6wjfq1xkjw0wg9e5r
   
+![alt tag](https://github.com/ibm-cloud-architecture/industrial-cloud-solutioning/blob/master/ICS_DataIngestApp/DataIngestArchitecture.png)
