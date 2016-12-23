@@ -44,109 +44,53 @@ import org.apache.commons.net.ftp.FTPClient;
 @ApplicationPath("rest")
 @Path("testservice")
 public class TestService  extends Application{
-	  private String topic="SampleTopic";
-	  private String ftpPath="";
-	  private String line="";
-
-/*	  @GET
-	  @Path("fetchAssetData")
-	  @Produces("application/json")
-	  public void fetchAssetData(@QueryParam("cat")String category,@QueryParam("load")String load,@QueryParam("batchsize")@DefaultValue("40")String batchsize) {
-		  System.out.println("fetch data called");
-		     String temp=category.trim();
-		     String val=load.trim();
-             System.out.println("batch:: " +batchsize);
-             int batch=Integer.parseInt(batchsize);
-			 System.out.println("temp:: " +temp + " equalIgnoreCase:: " +temp.equals("inv"));
-			 System.out.println("load:: " +load + "load.equalIgnoreCase("+load+"):: " +load.equalsIgnoreCase(val));
-             
-			  if(load.equalsIgnoreCase("product")){
-	       		ftpPath="/home/nprathap/ICSLZ/Product_Master.csv";  
-	       	  }else if(load.equalsIgnoreCase("warehouse")){
-	       		ftpPath="/home/nprathap/ICSLZ/Load_Warehouse_Master1.csv";  
-	       	  }else if(load.equalsIgnoreCase("vendor")){
-	       		ftpPath="/home/nprathap/ICSLZ/Load_VendorMaster3.csv";  
-	       	  }else if(load.equalsIgnoreCase("facility")){
-	       		ftpPath="/home/nprathap/ICSLZ/Load_Facility_Master1.csv";  
-	       	  }
-	       	  
-			  if(category.equalsIgnoreCase("prod")){
-				  topic="inventory";
-				  //ftpPath="/data/inv/Sample_500000.csv";
-				  System.out.println("topic:: " +topic +"ftp:: " +ftpPath);
-				  if(batch!=0)pushBatchData(topic,ftpPath,batch);
-				  else pushData(topic,ftpPath);
-			   }else if(category.equalsIgnoreCase("wh")){
-					  topic="facility";
-					  //ftpPath="/data/fac/FL_insurance_sample.csv";	
-					  System.out.println("topic:: " +topic +"ftp:: " +ftpPath);
-					  if(batch!=0)pushBatchData(topic,ftpPath,batch);
-					  else pushData(topic,ftpPath);
-			   }else if(category.equalsIgnoreCase("vend")){
-					  topic="openorder";
-					  //ftpPath="/data/opor/Sacramentorealestatetransactions.csv";	
-					  System.out.println("topic:: " +topic +"ftp:: " +ftpPath);
-					  if(batch!=0)pushBatchData(topic,ftpPath,batch);
-					  else pushData(topic,ftpPath);
-			   }else if(category.equalsIgnoreCase("fac")){
-					  topic="shipment";
-					  //ftpPath="/data/shp/SalesJan2009.csv";	
-					  System.out.println("topic:: " +topic +"ftp:: " +ftpPath);
-					  if(batch!=0)pushBatchData(topic,ftpPath,batch);
-					  else pushData(topic,ftpPath);
-			   }
-   
-		   //return "Success";
-
-	  } 
-*/
-	
-          @GET
+      private String topic="SampleTopic";
+      private String ftpPath="";
+      private String line="";
+      
+      @GET
       @Path("fetchAssetData")
       @Produces("application/json")
       public void fetchAssetData(@QueryParam("cat")String category,
-    		                     @QueryParam("load")String load,
     		                     @QueryParam("batchsize") String batchsize) {
           
     	  System.out.println("fetch data called");
           
-          System.out.println("new test service called"+"Category:"+category+"load:"+load+"BatchSize:"+batchsize);
+          System.out.println("Category:"+category+ " BatchSize:"+batchsize);
           
              String temp=category.trim();
              int batch=0;//send data line by line
-             String val=load.trim();
              System.out.println("batch:: " +batchsize);
              if(batchsize!=null){
                  batch=Integer.parseInt(batchsize);
              }
-             System.out.println("temp:: " +temp + " equalIgnoreCase::" +temp.equals("inv"));
-             System.out.println("load:: " +load +"load.equalIgnoreCase("+load+"):: " +load.equalsIgnoreCase(val));
-
 
               if(category.equalsIgnoreCase("facility")){
             	  topic="facility";
-            	  System.out.println("Inside facility Category");
+            	   System.out.println("1:: Inside facility Category");
                    ftpPath="/home/schandr1/ICSLZ/Load_Facility_Master1.csv";
                    if(batch == 0)pushData(topic,ftpPath); 
                    else pushBatchData(topic,ftpPath,batch); 
-                 }else if(category.equalsIgnoreCase("facilitymaster")){
+               }else if(category.equalsIgnoreCase("facilitymaster")){
                    topic="facilitymaster";
+                   System.out.println("1:: Inside facility master Category");
                    ftpPath="/home/schandr1/ICSLZ/Load_Warehouse_Master1.csv";
                    if(batch==0)pushData(topic,ftpPath);
                    else pushBatchData(topic,ftpPath,batch);
-                 }else if(category.equalsIgnoreCase("vendor")){
+               }else if(category.equalsIgnoreCase("vendor")){
                    topic="vendor";
+                   System.out.println("1:: Inside vendor Category");
                    ftpPath="/home/schandr1/ICSLZ/Load_VendorMaster3.csv";
                    if(batch==0)pushData(topic,ftpPath);
                    else pushBatchData(topic,ftpPath,batch);
-                 }
+               }
 
       }
-	
+      
     //Send data as String line by line
       public void pushData(String topic,String datapath){
            try{
-        	    System.out.println("Push Data Line by Line called");
+        	    System.out.println("2:: Push Data Line by Line called for datapath:: " +datapath);
                 MessageHubJavaSample proxy=new MessageHubJavaSample(topic);
                 FTPClient ftpClient = new FTPClient();
                 ftpClient.connect("169.38.90.50",21);
@@ -155,97 +99,99 @@ public class TestService  extends Application{
                 ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
                 InputStream inputStream =ftpClient.retrieveFileStream(datapath);
                 BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-                System.out.println("Inside Push Data:: " +inputStream);
+                System.out.println("Inside Push Data (inputStream):: " +inputStream);
                 int linecount=getLineCount(datapath);
-                System.out.println("inputStream:: " +inputStream + "linecount :: " +linecount);
+                System.out.println("linecount :: " +linecount);
                 //MessageList list = new MessageList();
                 int total=linecount;
                 int batchsize=1;
                 int count=0;
                 int diff=0;
                 int i=0;
-                System.out.println("Total Batch Size:: " +batchsize);
                 while((line=br.readLine())!=null){
-                    //list.push(line);
                     count++;
                 if(i<=total){
                 	proxy.InjestStringData(line);//Ingest batch of data
-                	//list = new MessageList();
                     i++;
                   }
                 }
+                --count;
+                System.out.println("Total Lines Ingested:: " +count);
            }catch(Exception t){t.printStackTrace();}
-            finally{System.out.println("Ingested all the data*****************");}
+            finally{           	
+                System.out.println("Ingested all the data*****************");}    
+                System.out.println("After finally *************");
+            }
+
+    //send data as a batch JSON array
+      public void pushBatchData(String topic,String datapath,int batch){
+          try{
+                MessageHubJavaSample proxy=new MessageHubJavaSample(topic);
+                FTPClient ftpClient = new FTPClient();
+                ftpClient.connect("169.38.90.50",21);
+                ftpClient.login("schandr1","welcome2ics");
+                ftpClient.enterLocalPassiveMode();
+                ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                InputStream inputStream =ftpClient.retrieveFileStream(datapath);
+                BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+                int linecount=getLineCount(datapath);
+                System.out.println("inputStream:: " +inputStream + "linecount :: " +linecount);
+                MessageList list = new MessageList();
+                //Insert content in array
+                //i variable will run till total data count
+                //count variable will keep track of batch size and after every
+                //batch size completion it will reset back to 0.
+                int total=linecount;
+                int batchsize=batch;
+                int count=0;
+                int diff=0;
+                int i=0;
+                System.out.println("Total Batch Size:: " +batchsize);
+                while((line=br.readLine())!=null){
+                    list.push(line);
+                    count++;
+                if(i<total){
+                    if(count==batchsize){
+                        diff=total-i-1;
+                        System.out.println("Ingested "+count+ " lines");
+                        System.out.println("Total left:: " +diff);
+                        proxy.InjestData(list);//Ingest batch of data
+                        list=new MessageList();
+                        if(diff<batchsize){
+                            batchsize=diff;
+                        }
+                        count=0;
+                    }
+                    i++;
+                  }
+                }
+          }catch(Exception t){
+              t.printStackTrace();
+          }
       }
 
-	  //send data as a batch JSON array
-	  public void pushBatchData(String topic,String datapath,int batch){
-		  try{
-			    MessageHubJavaSample proxy=new MessageHubJavaSample(topic);
-	        	FTPClient ftpClient = new FTPClient();
-	            ftpClient.connect("169.38.90.50",21);
-	            ftpClient.login("nprathap","passw0rd");
-	            ftpClient.enterLocalPassiveMode();
-	            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-	            InputStream inputStream = ftpClient.retrieveFileStream(datapath);
-	            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-			    int linecount=getLineCount(datapath);
-			    
-	        	MessageList list = new MessageList();
-            	//Insert content in array
-            	//i variable will run till total data count
-            	//count variable will keep track of batch size and after every 
-            	//batch size completion it will reset back to 0. 
-     			int total=linecount;
-				int batchsize=batch;
-	            int count=0;
-	            int diff=0;
-	            int i=0;
-	            System.out.println("Total Batch Size:: " +batchsize);
-	            while((line=br.readLine())!=null){
-	            	list.push(line);
-	            	count++;
-                if(i<total){
-	            	if(count==batchsize){
-	            		diff=total-i-1;
-	            		System.out.println("Ingested "+count+ " lines");
-	            		System.out.println("Total left:: " +diff);
-	            		proxy.InjestData(list);//Ingest batch of data
-	            		list=new MessageList();
-	            		if(diff<batchsize){
-	            			batchsize=diff;
-	            		}
-	            		count=0;
-	            	}
-	            	i++;
-	              }
-	            }	    
-		  }catch(Exception t){
-			  t.printStackTrace();
-		  }
-	  }
-	  
-	  private static int getLineCount(String remoteFile2){
-		  int count=0;
-		  String line=null;
-		  BufferedReader br=null;
-		  try{
-	        	FTPClient ftpClient = new FTPClient();
-	            ftpClient.connect("169.38.90.50",21);
-	            ftpClient.login("nprathap","passw0rd");
-	            ftpClient.enterLocalPassiveMode();
-	            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-	            InputStream inputStream = ftpClient.retrieveFileStream(remoteFile2);
-	            System.out.println("inputStream:: " +inputStream);
-	            br = new BufferedReader(new InputStreamReader(inputStream));
-	        	//BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(ftpPath)));
-	        	ArrayList list = new ArrayList();
-	        	while((line=br.readLine())!=null){
+      private static int getLineCount(String remoteFile2){
+          int count=0;
+          String line=null;
+          BufferedReader br=null;
+          try{
+                FTPClient ftpClient = new FTPClient();
+                ftpClient.connect("169.38.90.50",21);
+                ftpClient.login("schandr1","welcome2ics");
+                ftpClient.enterLocalPassiveMode();
+                ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                InputStream inputStream =
+                ftpClient.retrieveFileStream(remoteFile2);
+                System.out.println("inputStream (inside Line Count)::" +inputStream);
+                br = new BufferedReader(new InputStreamReader(inputStream));
+                //BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(ftpPath)));
+                ArrayList list = new ArrayList();
+                while((line=br.readLine())!=null){
                      ++count;
-	        	}				  
-		  }catch(Exception t){t.printStackTrace();}
-		   finally{try{br.close();}catch(Exception t){t.printStackTrace();}}
-		  return count;
-	  }
-	  
+                }
+          }catch(Exception t){t.printStackTrace();}
+           finally{try{br.close();}catch(Exception t){t.printStackTrace();}}
+          return count;
+      }
+
 }
