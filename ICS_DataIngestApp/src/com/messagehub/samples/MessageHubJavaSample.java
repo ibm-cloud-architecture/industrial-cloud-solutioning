@@ -29,14 +29,18 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -63,6 +67,7 @@ public class MessageHubJavaSample {
     private static boolean isDistribution;
     private String topic="";
     private String kafkaHost=null;
+    private boolean closing = false;
     private String kafkaHostUS = "kafka01-prod01.messagehub.services.us-south.bluemix.net:9093,"
     		                  + "kafka02-prod01.messagehub.services.us-south.bluemix.net:9093,"
     		                  + "kafka03-prod01.messagehub.services.us-south.bluemix.net:9093,"
@@ -78,7 +83,11 @@ public class MessageHubJavaSample {
     private String restHost = null;
     private String apiKey = null;
     private KafkaProducer<byte[], byte[]> kafkaProducer;
-    public MessageHubJavaSample(){}
+    private KafkaConsumer<byte[], byte[]> kafkaConsumer;
+    ArrayList<String> topicList;
+    public MessageHubJavaSample(){
+    	topicList = new ArrayList<String>();
+    }
     
  
     public MessageHubJavaSample(String topicName){
@@ -137,7 +146,8 @@ public class MessageHubJavaSample {
           // Push a message into the list to be sent.
           //MessageList list = new MessageList();
          // list.push(data);
-          System.out.println("++++++++++++data before publish:: " +list.toString());
+          System.out.println("3:: ++++++++++++Inside Ingest JSON data:: " +list.toString());
+        
           try {
               if(apiKey==null){//For Local Testing
              	 apiKey="br1XTccWWjOvzxivvAXdqbmokRDlG9QitbwA4ddOquRkSmej";
@@ -170,15 +180,12 @@ public class MessageHubJavaSample {
  
     }
 
- 
       //public void InjestData(String data) throws InterruptedException,
       public void InjestStringData(String data) throws InterruptedException,
             ExecutionException, IOException {
           String fieldName = "records";
           // Push a message into the list to be sent.
-          //MessageList list = new MessageList();
-         // list.push(data);
-          System.out.println("++++++++++++data before publish:: " +data);
+          System.out.println("3:: ++++++++++++Inside Ingest String data:: " +data);
           try {
               if(apiKey==null){//For Local Testing
              	 apiKey="br1XTccWWjOvzxivvAXdqbmokRDlG9QitbwA4ddOquRkSmej";
@@ -204,13 +211,66 @@ public class MessageHubJavaSample {
               System.out.println("Message produced, offset: " + m.offset());
               logger.log(Level.INFO, "Message produced, offset: " + m.offset());
           } catch (final Exception e) {
+        	  System.out.println("(Inside Exception) Program Exit because of Message Hub Issue:: ");
               e.printStackTrace();
               // Consumer will hang forever, so exit program.
+              
               System.exit(-1);
           }
  
     }
-    
+
+      public List checkTopic(String topicName) throws InterruptedException,
+            ExecutionException, IOException {
+    	  ArrayList topicData=new ArrayList();
+          try {
+        	  topicList.add(topic);
+        	 
+              if(apiKey==null){//For Local Testing
+             	 apiKey="rwL9Gv9FmIZwpoYqUeVhFGdeePndAvOQp8oPOXzWbsyLUBEh";
+             	 kafkaHost=kafkaHostEU;
+              }
+        	  System.out.println("DataInjestApp****************kafkaHost:: " +kafkaHost);
+        	  System.out.println("DataInjestApp****************apiKey:: " +apiKey);
+        	  Properties clientConfig=getClientConfiguration(kafkaHost, apiKey, true);
+              this.kafkaConsumer = new KafkaConsumer<byte[], byte[]>(clientConfig,new ByteArrayDeserializer(), new ByteArrayDeserializer());
+              kafkaConsumer.subscribe(topicList);
+              // Poll on the Kafka consumer every second.
+              Iterator<ConsumerRecord<byte[], byte[]>> it = kafkaConsumer
+                      .poll(1000).iterator();
+
+              // Iterate through all the messages received and print their
+              // content.
+              // After a predefined number of messages has been received, the
+              // client
+              // will exit.
+              while (it.hasNext()) {
+                  ConsumerRecord<byte[], byte[]> record = it.next();
+                  final String message = new String(record.value(),
+                          Charset.forName("UTF-8"));
+                  System.out.println("Message:: " +message);
+                  topicData.add(message);
+                  logger.log(Level.INFO, "Message: " + message);
+              }
+
+              kafkaConsumer.commitSync();
+
+              Thread.sleep(1000);              
+          } catch (final InterruptedException e) {
+              logger.log(Level.ERROR, "Producer/Consumer loop has been unexpectedly interrupted");
+              shutdown();
+          } catch (final Exception e) {
+              logger.log(Level.ERROR, "Consumer has failed with exception: " + e);
+              shutdown();
+          }
+          kafkaConsumer.close();
+          return topicData;
+    }
+
+      public void shutdown() {
+          closing = true;
+      }
+      
     /**
      * Retrieve client configuration information, using a properties file, for
      * connecting to secure Kafka.
