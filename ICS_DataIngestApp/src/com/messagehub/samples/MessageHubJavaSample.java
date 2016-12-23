@@ -208,7 +208,46 @@ public class MessageHubJavaSample {
  
     }
 
+      //public void InjestData(String data) throws InterruptedException,
+      public void InjestStringData(String data) throws InterruptedException,
+            ExecutionException, IOException {
+          String fieldName = "records";
+          // Push a message into the list to be sent.
+          //MessageList list = new MessageList();
+         // list.push(data);
+          System.out.println("++++++++++++data before publish:: " +data);
+          try {
+              if(apiKey==null){//For Local Testing
+             	 apiKey="br1XTccWWjOvzxivvAXdqbmokRDlG9QitbwA4ddOquRkSmej";
+             	 kafkaHost=kafkaHostEU;
+              }
+        	  System.out.println("DataInjestApp****************kafkaHost:: " +kafkaHost);
+        	  System.out.println("DataInjestApp****************apiKey:: " +apiKey);
+        	  Properties clientConfig=getClientConfiguration(kafkaHost, apiKey, true);
+              this.kafkaProducer = new KafkaProducer<byte[], byte[]>(clientConfig);
+              System.out.println("++++++++topic::  "+topic);
+              // Create a producer record which will be sent
+              // to the Message Hub service, providing the topic
+              // name, field name and message. The field name and
+              // message are converted to UTF-8.
+              ProducerRecord<byte[], byte[]> record = new ProducerRecord<byte[], byte[]>(
+                  topic,
+                  fieldName.getBytes("UTF-8"),
+                  data.getBytes("UTF-8"));
 
+              System.out.println("Message Sent!!!");
+              // Synchronously wait for a response from Message Hub / Kafka.
+              RecordMetadata m = kafkaProducer.send(record).get();
+              System.out.println("Message produced, offset: " + m.offset());
+              logger.log(Level.INFO, "Message produced, offset: " + m.offset());
+          } catch (final Exception e) {
+              e.printStackTrace();
+              // Consumer will hang forever, so exit program.
+              System.exit(-1);
+          }
+ 
+    }
+    
     /**
      * Retrieve client configuration information, using a properties file, for
      * connecting to secure Kafka.
