@@ -77,6 +77,10 @@ public class ConsumerRunnable implements Runnable {
                     final String message = new String(record.value(),
                             Charset.forName("UTF-8"));
                     System.out.println("Message:: " +message);
+                   if(message.equalsIgnoreCase("EOF")){
+                    	closing=true;
+                    	break;
+                    }
                     logger.log(Level.INFO, "Message: " + message);
                 }
 
@@ -90,6 +94,39 @@ public class ConsumerRunnable implements Runnable {
                 logger.log(Level.ERROR, "Consumer has failed with exception: " + e);
                 shutdown();
             }
+        System.out.println("Outside while of Consumer. All data has bee consumed");
+        String replyToMessage="Transaction Complete";
+        try{
+        ProducerRecord<byte[], byte[]> record = new ProducerRecord<byte[], byte[]>(
+        		replyToTopic,
+        		replyToMessage.getBytes("UTF-8"));
+        RecordMetadata m = kafkaProducer.send(record).get();
+        
+        //Calling REST API exposed in NodeJS application
+        URL url = new URL("http://localhost:3000/ws/dataingestresp");
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Accept", "application/json");
+
+		if (conn.getResponseCode() != 200) {
+			throw new RuntimeException("Failed : HTTP error code : "
+					+ conn.getResponseCode());
+		}
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(
+			(conn.getInputStream())));
+
+		String output;
+		System.out.println("Output from Server .... \n");
+		while ((output = br.readLine()) != null) {
+			System.out.println(output);
+		}
+
+		conn.disconnect();    
+        
+        }catch(Exception t){t.printStackTrace();}            
+            
+            
         }
 
         logger.log(Level.INFO, ConsumerRunnable.class.toString() + " is shutting down.");
