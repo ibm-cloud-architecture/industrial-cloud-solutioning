@@ -115,6 +115,7 @@ public class TestService  extends Application{
                     i++;
                   }
                 }
+               proxy.InjestStringData("EOF");    
                 --count;
                 System.out.println("Total Lines Ingested:: " +count);
            }catch(Exception t){t.printStackTrace();}
@@ -165,6 +166,7 @@ public class TestService  extends Application{
                     i++;
                   }
                 }
+                proxy.InjestStringData("EOF");
           }catch(Exception t){
               t.printStackTrace();
           }
