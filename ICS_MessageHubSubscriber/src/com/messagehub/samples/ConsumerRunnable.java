@@ -97,12 +97,13 @@ public class ConsumerRunnable implements Runnable {
         System.out.println("Outside while of Consumer. All data has bee consumed");
         String replyToMessage="Transaction Complete";
         try{
-        ProducerRecord<byte[], byte[]> record = new ProducerRecord<byte[], byte[]>(
+       /* ProducerRecord<byte[], byte[]> record = new ProducerRecord<byte[], byte[]>(
         		replyToTopic,
         		replyToMessage.getBytes("UTF-8"));
         RecordMetadata m = kafkaProducer.send(record).get();
-        
+       */
         //Calling REST API exposed in NodeJS application
+	//Push data as and when it is available to UI application
         URL url = new URL("http://localhost:3000/ws/dataingestresp");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
